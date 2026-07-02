@@ -149,6 +149,8 @@ body {
   font-size: 13px;
 }
 .refresh-btn:hover { color: var(--accent-text); border-color: var(--accent); }
+.refresh-btn:disabled { cursor: default; opacity: 0.75; }
+.refresh-btn.spinning { color: var(--accent-text); border-color: var(--accent); }
 
 .grid {
   display: grid;

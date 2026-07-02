@@ -51,6 +51,8 @@ function App() {
   const [activeCat, setActiveCat] = useState<string>("");
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<SkillMeta | null>(null);
+  const [refreshState, setRefreshState] = useState<"idle" | "loading" | "done">("idle");
+  const [refreshMsg, setRefreshMsg] = useState("");
 
   const load = async () => {
     const raw = await invoke<RawConfig>("load_config");
@@ -64,6 +66,22 @@ function App() {
     const list = await invoke<SkillMeta[]>("scan_skills");
     setSkills(list);
     setActiveCat((cur) => cur || (cfg.categories.length ? cfg.categories[0].id : ""));
+    return list.length;
+  };
+
+  // 点「重新扫描」：数据没变时界面看不出变化，给个短暂的可见反馈
+  const rescan = async () => {
+    if (refreshState === "loading") return;
+    setRefreshState("loading");
+    try {
+      const n = await load();
+      setRefreshState("done");
+      setRefreshMsg(`✓ 已扫描 ${n} 个`);
+      setTimeout(() => setRefreshState("idle"), 1600);
+    } catch (e) {
+      setRefreshState("idle");
+      console.error(e);
+    }
   };
 
   useEffect(() => {
@@ -218,7 +236,17 @@ ${list}
             <h1>{activeName}</h1>
             <div className="page-sub">{visible.length} 个 skill</div>
           </div>
-          <button className="refresh-btn" onClick={() => load()}>⟳ 重新扫描</button>
+          <button
+            className={`refresh-btn ${refreshState === "loading" ? "spinning" : ""}`}
+            onClick={rescan}
+            disabled={refreshState === "loading"}
+          >
+            {refreshState === "loading"
+              ? "⟳ 扫描中…"
+              : refreshState === "done"
+                ? refreshMsg
+                : "⟳ 重新扫描"}
+          </button>
         </div>
         <div className="grid">
           {visible.map((s) => (
