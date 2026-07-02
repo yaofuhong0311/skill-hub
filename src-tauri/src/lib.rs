@@ -262,7 +262,13 @@ const DEFAULT_TEMPLATES: &str = include_str!("../../config/templates.json");
 const DEFAULT_SUMMARIES: &str = include_str!("../../config/summaries.json");
 
 fn user_config_dir() -> PathBuf {
-    home().join("Library/Application Support/skill-kanban")
+    let dir = home().join("Library/Application Support/skill-hub");
+    // 项目曾用名 skill-kanban：老配置目录存在且新目录还没建时，一次性迁移
+    let legacy = home().join("Library/Application Support/skill-kanban");
+    if !dir.exists() && legacy.exists() {
+        let _ = fs::rename(&legacy, &dir);
+    }
+    dir
 }
 
 #[derive(Serialize)]

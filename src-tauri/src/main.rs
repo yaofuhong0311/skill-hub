@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    skill_kanban_lib::run()
+    skill_hub_lib::run()
 }

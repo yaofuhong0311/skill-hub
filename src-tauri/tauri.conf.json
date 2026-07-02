@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "skill-kanban",
+  "productName": "skill-hub",
   "version": "0.1.0",
-  "identifier": "com.yaofuhong.skill-kanban",
+  "identifier": "com.yaofuhong.skill-hub",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Skill 看板",
+        "title": "Skill Hub",
         "width": 1200,
         "height": 800,
         "minWidth": 900,

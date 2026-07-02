@@ -1,4 +1,4 @@
-# Skill 看板（skill-kanban）
+# Skill Hub（skill-hub）
 
 macOS 桌面应用：把散落在本地各处的 AI Agent skill（Claude Code、Codex、跨平台 Agents 库）收进一个可视化看板——分类浏览、一句话看懂每个 skill 能干什么、填参数生成即用 prompt、在线找类似 skill、直接编辑源文件。
 
@@ -29,19 +29,19 @@ macOS 桌面应用：把散落在本地各处的 AI Agent skill（Claude Code、
 
 ## 安装
 
-到 [Releases](../../releases) 下载 `skill-kanban_x.x.x_aarch64.dmg`（Apple Silicon），拖入「应用程序」。
+到 [Releases](../../releases) 下载 `skill-hub_x.x.x_aarch64.dmg`（Apple Silicon），拖入「应用程序」。
 
 > **首次打开提示"无法验证开发者"**：应用未做 Apple 签名公证，属正常。两种解法任选：
 > - 在「应用程序」里**右键 → 打开 → 打开**（只需一次）
-> - 或终端执行：`xattr -cr /Applications/skill-kanban.app`
+> - 或终端执行：`xattr -cr /Applications/skill-hub.app`
 
 ## 从源码构建
 
 依赖：Node 18+、Rust 工具链（`curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`）。
 
 ```bash
-git clone https://github.com/yaofuhong0311/skill-kanban.git
-cd skill-kanban
+git clone https://github.com/yaofuhong0311/skill-hub.git
+cd skill-hub
 npm install
 npm run tauri dev     # 开发模式
 npm run tauri build   # 产出 dmg：src-tauri/target/release/bundle/dmg/
@@ -62,13 +62,13 @@ npm run tauri build   # 产出 dmg：src-tauri/target/release/bundle/dmg/
 分类、简介、模板存在三份 JSON 里（应用内置一份默认，覆盖本仓库作者机器上的 110 个 skill）。别人机器上的 skill 不在默认配置里时：
 
 1. 打开应用，侧栏底部会出现 **「⚙ 补全配置 Prompt（N）」** 按钮（N = 缺配置的 skill 数；配置齐全时这里显示「✓ 分类/简介/模板已齐全」）
-2. 点击复制出一段 prompt，**粘到自己的 Claude Code 里执行**——Claude 会读取本机的 SKILL.md，生成三份 JSON 写到用户配置目录
+2. 点击复制出一段 prompt，**粘到你常用的 AI 编程助手里执行**（Claude Code、Codex CLI、Cursor 等都行，指令本身只是读 SKILL.md、写三份 JSON）
 3. 回到应用点「重新扫描」，分类和简介即生效
 
 用户配置目录（增量覆盖内置默认，可手工编辑）：
 
 ```
-~/Library/Application Support/skill-kanban/
+~/Library/Application Support/skill-hub/
 ├── categories.json   # 分类定义 + skill→分类映射
 ├── summaries.json    # skill→一句话简介
 └── templates.json    # skill→prompt 模板

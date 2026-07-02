@@ -105,7 +105,7 @@ function App() {
 
   const summaryOf = (s: SkillMeta) => summaries[s.dir_name] ?? fallbackSummary(s);
 
-  // 缺配置的 skill（发给别人 / 新装 skill 时用）：生成一段 prompt 让对方的 Claude Code 就地补全
+  // 缺配置的 skill（发给别人 / 新装 skill 时用）：生成一段 prompt 让任意 AI 编程助手就地补全
   const missing = useMemo(
     () =>
       skills.filter(
@@ -122,12 +122,12 @@ function App() {
       .map((c) => `${c.id}（${c.name}）`)
       .join("、");
     const list = missing.map((s) => `- ${s.path}/SKILL.md`).join("\n");
-    const text = `请为我的 Skill 看板应用补全 ${missing.length} 个 skill 的配置。
+    const text = `请为我的 Skill Hub 应用补全 ${missing.length} 个 skill 的配置。
 
 第一步：逐个读取以下 SKILL.md 的 frontmatter（name、description）：
 ${list}
 
-第二步：在 ~/Library/Application Support/skill-kanban/ 目录下创建或更新三个 JSON 文件（如已存在则合并，保留已有条目，只新增/覆盖这批 skill 的条目；key 一律用 skill 的目录名）：
+第二步：在 ~/Library/Application Support/skill-hub/ 目录下创建或更新三个 JSON 文件（如已存在则合并，保留已有条目，只新增/覆盖这批 skill 的条目；key 一律用 skill 的目录名）：
 1. categories.json：格式 {"categories":[{"id","name","order"}...],"mapping":{"skill目录名":"分类id"}}。可用分类：${cats}；确实放不进的可新增分类。
 2. summaries.json：{"skill目录名":"中文一句话简介（≤35字，讲清能帮我干什么）"}
 3. templates.json：{"skill目录名":"中文 prompt 模板，变量用{中文占位符}，明确写「请使用 xxx skill」"}
@@ -174,7 +174,7 @@ ${list}
     <div className="layout">
       <aside className="sidebar">
         <div className="sidebar-title">
-          <span className="sidebar-logo">▦</span> Skill 看板
+          <span className="sidebar-logo">▦</span> Skill Hub
         </div>
         <input
           className="search"
@@ -201,8 +201,8 @@ ${list}
         <div className="sidebar-foot">
           <span>共 {skills.length} 个 skill</span>
           {missing.length > 0 ? (
-            <button className="fill-btn" onClick={copyFillPrompt} title="复制一段 prompt，粘到 Claude Code 里为缺配置的 skill 生成分类/简介/模板">
-              {promptCopied ? "✓ 已复制，去粘给 Claude Code" : `⚙ 补全配置 Prompt（${missing.length}）`}
+            <button className="fill-btn" onClick={copyFillPrompt} title="复制一段 prompt，粘到 Claude Code / Codex 等任意 AI 编程助手里，为缺配置的 skill 生成分类/简介/模板">
+              {promptCopied ? "✓ 已复制，去粘给你的 AI 编程助手" : `⚙ 补全配置 Prompt（${missing.length}）`}
             </button>
           ) : (
             <span className="fill-ok" title="装了新 skill 或把应用发给别人时，这里会出现「补全配置 Prompt」按钮">
